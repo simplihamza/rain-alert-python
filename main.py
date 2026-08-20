@@ -35,3 +35,5 @@ if will_rain:
         body="️It's going to rain today. Remember to bring an ☔️"
     )
     print(message.status)
+else:
+    print("No rain expected")
