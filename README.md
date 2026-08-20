@@ -41,11 +41,6 @@ next ~12 hours.
   no way to change it without editing the code.
 - No `requirements.txt` yet, dependencies must be installed manually.
 - No `.env.example` template committed.
-- If no rain is forecast, `will_rain` and `message` are never
-  assigned, so the script exits with a `NameError` instead of exiting
-  cleanly.
-- The SMS body text is a hardcoded placeholder, not an actual
-  "rain is coming" message.
 - No tests.
 
 ## What I Learned

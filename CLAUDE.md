@@ -38,17 +38,15 @@ contents.
 - `main.py` is entirely top-level so far (no functions/classes yet):
   load env, build request params, call the OpenWeatherMap
   `/data/2.5/forecast` endpoint, iterate `weather_data["list"]`, check
-  each entry's `weather[0]["id"]`, then build a Twilio `Client` and send
-  an SMS if rain was detected.
+  each entry's `weather[0]["id"]`, setting `will_rain = True` if any
+  entry indicates rain. `will_rain` is initialized to `False` before
+  the loop, so a no-rain forecast falls through cleanly.
+- If `will_rain` is `True`, a Twilio `Client` is built and a single SMS
+  is sent via `client.messages.create(...)` with a fixed body ("It's
+  going to rain today. Remember to bring an ☔️"), and the message
+  status is printed. Nothing is printed/sent if no rain is forecast.
 - Rain threshold (`id < 700`) relies on OpenWeatherMap's condition code
   grouping: codes below 700 are Thunderstorm/Drizzle/Rain/Snow, 700+ are
   Atmosphere/Clear/Clouds.
 - Lat/lon and forecast count (`cnt`) are hardcoded in `weather_parameters`,
   no CLI/config layer for changing location yet.
-- Known bug: `will_rain` is only ever assigned inside the forecast loop
-  (never initialized to `False` beforehand), and `message` is only
-  assigned inside the `if will_rain:` block. If no forecast entry
-  indicates rain, both the `if will_rain:` check and the trailing
-  `print(message.status)` raise `NameError` instead of exiting cleanly.
-- The SMS body sent via `client.messages.create(...)` is currently a
-  hardcoded placeholder string, not an actual "rain is coming" message.
