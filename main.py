@@ -21,18 +21,17 @@ response = requests.get("https://api.openweathermap.org/data/2.5/forecast", para
 response.raise_for_status()
 weather_data = response.json()
 
+will_rain = False
 for weather in weather_data["list"]:
     condition_code = weather["weather"][0]["id"]
     if int(condition_code) < 700:
         will_rain = True
 
-client = Client(account_sid, auth_token)
-
 if will_rain:
+    client = Client(account_sid, auth_token)
     message = client.messages.create(
         to=receiver_number,
         from_=trial_number,
-        body="️sms_event_notifications",
+        body="️It's going to rain today. Remember to bring an ☔️"
     )
-
-print(message.status)
+    print(message.status)
